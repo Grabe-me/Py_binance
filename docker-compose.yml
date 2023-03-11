@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: pybinance_database
+    image: postgres:14.6
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_HOST=localhost
+    volumes:
+      - ./volumes/postgresql/pybin-data:/var/lib/postgresql/pybin/data
+
+
+  app:
+    container_name: pybinance_localapp
+    image: grabe85me/pybinance:docker_compose
+    command: python3 main.py
+    expose:
+      - "3000"
+      - "8000"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
